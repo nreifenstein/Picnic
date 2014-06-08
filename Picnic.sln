@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picnic", "Picnic\Picnic.csproj", "{408898F1-89EF-4035-A0D8-A401D84A9084}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug32|Any CPU = Debug32|Any CPU
+		Debug64|Any CPU = Debug64|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{408898F1-89EF-4035-A0D8-A401D84A9084}.Debug32|Any CPU.ActiveCfg = Debug32|Any CPU
+		{408898F1-89EF-4035-A0D8-A401D84A9084}.Debug32|Any CPU.Build.0 = Debug32|Any CPU
+		{408898F1-89EF-4035-A0D8-A401D84A9084}.Debug64|Any CPU.ActiveCfg = Debug64|Any CPU
+		{408898F1-89EF-4035-A0D8-A401D84A9084}.Debug64|Any CPU.Build.0 = Debug64|Any CPU
+		{408898F1-89EF-4035-A0D8-A401D84A9084}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{408898F1-89EF-4035-A0D8-A401D84A9084}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
