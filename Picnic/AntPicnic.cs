@@ -29,7 +29,7 @@ namespace Picnic
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager) {
             pManager.RegisterParam(new GHParam_SpatialGraph(), "Spatial Graph", "S", "The Spatial Graph.", GH_ParamAccess.item);
             pManager.Register_StringParam("Script", "Func", "The function to execute", GH_ParamAccess.item);
-            pManager.Register_DoubleParam("Value", "V", "Initial Values", GH_ParamAccess.list);
+            pManager.Register_GenericParam("Value", "V", "Initial Values", GH_ParamAccess.list);
             pManager.Register_IntegerParam("Generations", "G", "Number of Generations to create.", 0, GH_ParamAccess.item);
         }
 
@@ -40,7 +40,7 @@ namespace Picnic
 
         protected override void SolveInstance(IGH_DataAccess DA) {
             AWorld refwrld = new AWorld();
-            List<double> v_list = new List<double>();
+            List<object> v_list = new List<object>();
             //GH_Dict test = GH_Dict.create("a", 1.0);
 
             //if (!DA.GetData(0, ref refwrld) || !refwrld.IsValid) return;
@@ -58,7 +58,7 @@ namespace Picnic
 
             // Sets the initial Generation by using the input v_list
             // if it runs out of values, it starts over (wraps)
-            double[] val_list = new double[gph.nodes.Count];
+            object[] val_list = new object[gph.nodes.Count];
             int v_i = 0;
             for (int i = 0; i < gph.nodes.Count; i++)
             {
@@ -67,50 +67,50 @@ namespace Picnic
                 v_i++;
             }
 
-            AWorld wrld = new AWorld(gph, val_list);
+            //AWorld wrld = new AWorld(gph, val_list);
 
-            _py = PythonScript.Create();
-            _py.Output = this.m_py_output.Write;
-            _compiled_py = _py.Compile(pyString);
+            //_py = PythonScript.Create();
+            //_py.Output = this.m_py_output.Write;
+            //_compiled_py = _py.Compile(pyString);
 
-            // console out
+            //// console out
             Grasshopper.Kernel.Data.GH_Structure<Grasshopper.Kernel.Types.GH_String> consoleOut = new Grasshopper.Kernel.Data.GH_Structure<Grasshopper.Kernel.Types.GH_String>();
 
-            // Main evaluation cycle
-            // Should move code into the Antsworld Class
-            for (int g = 0; g < nGen; g++)
-            {
-                // console out
-                this.m_py_output.Reset();
+            //// Main evaluation cycle
+            //// Should move code into the Antsworld Class
+            //for (int g = 0; g < nGen; g++)
+            //{
+            //    // console out
+            //    this.m_py_output.Reset();
 
-                double[] new_vals = new double[wrld.NodeCount];
-                for (int i = 0; i < wrld.NodeCount; i++)
-                {
-                    int[] neighboring_indices = wrld.gph.NeighboringIndexesOf(i);
+            //    double[] new_vals = new double[wrld.NodeCount];
+            //    for (int i = 0; i < wrld.NodeCount; i++)
+            //    {
+            //        int[] neighboring_indices = wrld.gph.NeighboringIndexesOf(i);
 
-                    // build list of neighboring values
-                    List<double> neighboring_vals = new List<double>();
-                    for (int k = 0; k < neighboring_indices.Length; k++) neighboring_vals.Add(wrld.LatestGen[neighboring_indices[k]]);
-
-
-                    double d = EvaluateCell(i, wrld.LatestGen[i], neighboring_vals);
-                    //double d = g + i + 0.0;
-
-                    new_vals[i] = d;
-                }
-                wrld.AddGen(new_vals);
-
-                // console out
-                Grasshopper.Kernel.Data.GH_Path key_path = new Grasshopper.Kernel.Data.GH_Path(g);
-                List<Grasshopper.Kernel.Types.GH_String> gh_strs = new List<Grasshopper.Kernel.Types.GH_String>();
-                foreach (String str in this.m_py_output.Result) gh_strs.Add(new Grasshopper.Kernel.Types.GH_String(str));
-                consoleOut.AppendRange(gh_strs, key_path);
+            //        // build list of neighboring values
+            //        List<double> neighboring_vals = new List<double>();
+            //        for (int k = 0; k < neighboring_indices.Length; k++) neighboring_vals.Add(wrld.LatestGen[neighboring_indices[k]]);
 
 
-            }
+            //        double d = EvaluateCell(i, wrld.LatestGen[i], neighboring_vals);
+            //        //double d = g + i + 0.0;
+
+            //        new_vals[i] = d;
+            //    }
+            //    wrld.AddGen(new_vals);
+
+            //    // console out
+            //    Grasshopper.Kernel.Data.GH_Path key_path = new Grasshopper.Kernel.Data.GH_Path(g);
+            //    List<Grasshopper.Kernel.Types.GH_String> gh_strs = new List<Grasshopper.Kernel.Types.GH_String>();
+            //    foreach (String str in this.m_py_output.Result) gh_strs.Add(new Grasshopper.Kernel.Types.GH_String(str));
+            //    consoleOut.AppendRange(gh_strs, key_path);
+
+
+            //}
 
             DA.SetDataTree(0, consoleOut);
-            DA.SetData(1, wrld);
+            //DA.SetData(1, wrld);
 
         }
 
