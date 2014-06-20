@@ -31,16 +31,23 @@ namespace Picnic
             pManager.Register_StringParam("Script", "Func", "The function to execute", GH_ParamAccess.item);
             pManager.Register_GenericParam("Value", "V", "Initial Values", GH_ParamAccess.list);
             pManager.Register_IntegerParam("Generations", "G", "Number of Generations to create.", 0, GH_ParamAccess.item);
+            pManager.Register_GenericParam("Dict", "D", "Dictionary", GH_ParamAccess.item);
+            pManager.Register_StringParam("Key", "K", "Key", GH_ParamAccess.item);
         }
 
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager) {
             pManager.Register_StringParam("Console", "...", "Messages from Python", GH_ParamAccess.tree);
             pManager.RegisterParam(new GHParam_AWorld(), "AWorld", "W", "The resulting AntsWorld.", GH_ParamAccess.item);
+            pManager.Register_StringParam("Value", "V", "Value for Key", GH_ParamAccess.item);
         }
 
         protected override void SolveInstance(IGH_DataAccess DA) {
             AWorld refwrld = new AWorld();
             List<object> v_list = new List<object>();
+            GH_ObjectWrapper gh_dict = new GH_ObjectWrapper();
+            IDictionary<string, string> dict = new Dictionary<string,string>();
+            string k = "";
+            
             //GH_Dict test = GH_Dict.create("a", 1.0);
 
             //if (!DA.GetData(0, ref refwrld) || !refwrld.IsValid) return;
@@ -54,18 +61,28 @@ namespace Picnic
             if (!DA.GetData(1, ref pyString)) return;
             if (!DA.GetDataList(2, v_list)) return;
             if (!DA.GetData(3, ref nGen)) return;
+            if (!DA.GetData(4, ref gh_dict)) return;
+            if (!DA.GetData(5, ref k)) return;
 
+            //dict = (IDictionary<string, string>)gh_dict.Value;
+
+            //object d = gh_dict.Value;
+            var t = Type.GetType("IronPython.Runtime.PythonDictionary,IronPython");
+            IDictionary i_dict = Activator.CreateInstance(t) as IDictionary;
+            //IronPython.Runtime.PythonDictionary d = gh_dict.Value;
+            //string v = d.get(k);
+            string v = "oops";
 
             // Sets the initial Generation by using the input v_list
             // if it runs out of values, it starts over (wraps)
-            object[] val_list = new object[gph.nodes.Count];
-            int v_i = 0;
-            for (int i = 0; i < gph.nodes.Count; i++)
-            {
-                if (v_i == v_list.Count) v_i = 0;
-                val_list[i] = v_list[v_i];
-                v_i++;
-            }
+            //object[] val_list = new object[gph.nodes.Count];
+            //int v_i = 0;
+            //for (int i = 0; i < gph.nodes.Count; i++)
+            //{
+            //    if (v_i == v_list.Count) v_i = 0;
+            //    val_list[i] = v_list[v_i];
+            //    v_i++;
+            //}
 
             //AWorld wrld = new AWorld(gph, val_list);
 
@@ -111,6 +128,7 @@ namespace Picnic
 
             DA.SetDataTree(0, consoleOut);
             //DA.SetData(1, wrld);
+            DA.SetData(2, v);
 
         }
 

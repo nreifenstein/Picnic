@@ -13,15 +13,15 @@ namespace Picnic
 {
     public class GH_Dict
     {
-        public Dictionary<string, double> val;
+        public Dictionary<object, object> val;
         public bool initialized;
 
         public GH_Dict() : base() {
-            this.val = new Dictionary<string, double>();
+            this.val = new Dictionary<object, object>();
             this.initialized = false;
         }
 
-        public static GH_Dict create(string key, double num)
+        public static GH_Dict create(object key, object num)
         {
             GH_Dict dict = new GH_Dict();
 

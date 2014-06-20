@@ -9,6 +9,20 @@ using System.Collections.Generic;
 using System.Text;
 using Ants;
 using GH_IO;
+using Microsoft.Scripting;
+using Microsoft.Scripting.Hosting;
+using IronPython;
+using IronPython.Modules;
+using IronPython.Compiler.Ast;
+using IronPython.Runtime.Binding;
+using IronPython.Runtime;
+using IronPython.Runtime.Exceptions;
+using IronPython.Runtime.Types;
+using IronPython.Runtime.Operations;
+using IronPython.Compiler;
+using IronPython.Hosting;
+
+
 
 namespace Picnic
 {
@@ -37,7 +51,8 @@ namespace Picnic
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.Register_StringParam("Key", "K", "Key to check.", GH_ParamAccess.item);
+            pManager.Register_GenericParam("Key", "K", "Key to check.", GH_ParamAccess.item);
+            pManager.Register_GenericParam("Func", "F", "Function to Input", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -47,6 +62,8 @@ namespace Picnic
         {
             pManager.Register_BooleanParam("Contains", "B", "Contains Key.", GH_ParamAccess.item);
             pManager.Register_StringParam("Keys", "KS", "Keys in Picnic", GH_ParamAccess.list);
+            pManager.Register_GenericParam("Out", "O", "jhfjgs", GH_ParamAccess.item);
+            pManager.Register_StringParam("S", "S", "S", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -59,9 +76,34 @@ namespace Picnic
             bool test_bool = false;
             List<object> vals = new List<object>();
             List<string> output = new List<string>();
+            //Func<object, object> f = new Func<object, object>();
+            GH_ObjectWrapper f = new GH_ObjectWrapper();
+            //object f = new object();
+            GH_Point p = new GH_Point();
+            //double x = p.Value.X;
 
-            string key_str = "";
+            //object key_str = new object();
+            GH_ObjectWrapper key_str = new GH_ObjectWrapper();
+
+
+
             if (!DA.GetData(0, ref key_str)) return;
+            if (!DA.GetData(1, ref f)) return;
+
+            //var ret = key_str.Value;
+            var ret = key_str;
+            Type t =ret.GetType();
+
+            ScriptEngine pyEngine = Python.CreateEngine();
+            //delegate new_func = f.CastTo<Func<object, object>(out object);
+
+            dynamic result = pyEngine.Operations.Invoke(f.Value, ret);
+            object return_object = (object) result;
+            //Grasshopper.Kernel.Types.GH_ObjectWrapper wrapper = new GH_ObjectWrapper(return_object);
+            //res = wrapper;
+
+
+
 
             for (int i = 0; i < 10; i++)
             {
@@ -69,20 +111,23 @@ namespace Picnic
             }
 
 
-            Picnic test = new Picnic();
+            //Picnic test = new Picnic();
 
-            test.add("a", vals);
+            //test.add("a", vals);
 
-            test.add("b", vals);
+            //test.add("b", vals);
 
-            test_bool = test.contains(key_str);
+           // test_bool = true;
 
-            output = test.getkeys();
+            //output = test.getkeys();
+            string out_str = return_object.GetType().ToString();
 
             SpatialGraph gph = new SpatialGraph();
 
             DA.SetData(0, test_bool);
             DA.SetDataList(1, output);
+            DA.SetData(2, return_object);
+            DA.SetData(3, out_str);
 
             
         }
