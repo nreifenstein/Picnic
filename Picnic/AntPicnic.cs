@@ -178,32 +178,32 @@ namespace Picnic
         }
     }
  
-    class StringList
-    {
-        private readonly List<string> _txts = new List<string>();
+    //class StringList
+    //{
+    //    private readonly List<string> _txts = new List<string>();
 
-        public void Write(string s)
-        {
-            _txts.Add(s);
-        }
+    //    public void Write(string s)
+    //    {
+    //        _txts.Add(s);
+    //    }
 
-        public void Reset()
-        {
-            _txts.Clear();
-        }
+    //    public void Reset()
+    //    {
+    //        _txts.Clear();
+    //    }
 
-        public IList<string> Result
-        {
-            get { return new System.Collections.ObjectModel.ReadOnlyCollection<string>(_txts); }
-        }
+    //    public IList<string> Result
+    //    {
+    //        get { return new System.Collections.ObjectModel.ReadOnlyCollection<string>(_txts); }
+    //    }
 
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            foreach (string s in _txts)
-                sb.AppendLine(s);
-            return sb.ToString();
-        }
-    }
+    //    public override string ToString()
+    //    {
+    //        var sb = new StringBuilder();
+    //        foreach (string s in _txts)
+    //            sb.AppendLine(s);
+    //        return sb.ToString();
+    //    }
+    //}
 
 }

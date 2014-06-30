@@ -33,12 +33,12 @@ namespace Picnic
 
     public class Picnic
     {
-        public List<Dictionary<string, object>> val;
+        public List<Dictionary<object, object>> val;
         public bool initialized;
 
         public Picnic()
             : base() {
-            this.val = new List<Dictionary<string, object>>();
+                this.val = new List<Dictionary<object, object>>();
             this.initialized = false;
         }
 
@@ -78,7 +78,7 @@ namespace Picnic
             {
                 for (int i = 0; i < vals.Count; i++)
                 {
-                    this.val.Add(new Dictionary<string,object>());
+                    this.val.Add(new Dictionary<object,object>());
                 }
             }
 
