@@ -225,15 +225,16 @@ namespace Picnic
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             List<Dictionary<string, object>> pf_in = new List<Dictionary<string,object>>();
-            //List<object> pf_in = new List<object>();
             string key_in = "";
             List<object> v_in = new List<object>();
+
 
             List<GH_ObjectWrapper> raw_pf_in = new List<GH_ObjectWrapper>();
 
 
             if (!DA.GetData(1, ref key_in)) return;
             if (!DA.GetDataList(2, v_in)) return;
+
 
             //try  {
             //    DA.GetDataList(0, pf_in);
@@ -262,9 +263,23 @@ namespace Picnic
                 }
             }
 
+            var name = v_in[0].GetType().ToString();
+
+            if (name.Contains("GH_Number"))
+            {
+                List<double> d_in = new List<double>();
+                if (!DA.GetDataList(2, d_in)) return;
+                List<object> new_v_in = new List<object>();
+                for (int i = 0; i < d_in.Count; i++) {
+                    new_v_in.Add(d_in[i]);
+                }
+                v_in = new_v_in;
+
+            }
 
             for (int i = 0; i < v_in.Count; i++)
             {
+
                 if (pf_in[i].ContainsKey(key_in))
                 {
                     pf_in[i][key_in] = v_in[i];
