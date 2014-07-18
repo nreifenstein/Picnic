@@ -97,5 +97,71 @@ namespace Picnic
             
             return true;
         }
+
+        /// <summary>
+        ///  Generic Conversions
+        /// </summary>
+        /// <param name="obj_in"></param>
+        /// <param name="obj_out"></param>
+
+        public static List<object> Convert_List(List<object> obj_in)
+        {
+            To_Something Converter = null;
+            List<object> obj_out = new List<object>();
+
+            if (obj_in[0].GetType() == typeof(GH_Number))
+            {
+                Converter = To_Double;
+            }
+
+            if (obj_in[0].GetType() == typeof(GH_String))
+            {
+                Converter = To_String;
+            }
+
+            //switch (obj_in[0].GetType().ToString()) {
+            //    case "GH_Number": 
+            //        Converter = To_Double;
+            //        break;
+            //    case "GH_String":
+            //        Converter = To_String;
+            //        break;
+            //}
+
+
+            for (int i = 0; i < obj_in.Count; i++)
+            {
+                if (!(Converter == null))
+                {
+                    obj_out.Add(Converter(obj_in[i]));
+                }
+                else
+                {
+                    obj_out.Add(obj_in[i]);
+                }
+            }
+            return obj_out;
+        }
+
+        public static object To_Double(object in_val)
+        {
+            double n = new double();
+            var y = GH_Convert.ToDouble(in_val, out n, GH_Conversion.Both);
+            return (object)n;
+        }
+
+        public static object To_String(object in_val)
+        {
+            string n = "";
+            var y = GH_Convert.ToString(in_val, out n, GH_Conversion.Both);
+            return (object)n;
+        }
+
+
+        public delegate object To_Something(object o);
+        
+
+
+        /// end of generic converter block
     }
 }

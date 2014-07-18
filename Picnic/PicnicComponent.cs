@@ -350,8 +350,9 @@ namespace Picnic
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.Register_GenericParam("PF", "PF", "Picnic to view.", GH_ParamAccess.list);
-
+            //pManager.Register_GenericParam("PF", "PF", "Picnic to view.", GH_ParamAccess.list);
+            //pManager.Register_GenericParam("G", "G", "Object to test.", GH_ParamAccess.item);
+            pManager.Register_GenericParam("G", "G", "Object to test.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -359,9 +360,15 @@ namespace Picnic
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.Register_GenericParam("Keys", "K", "jhfjgs", GH_ParamAccess.list);
-            pManager.Register_GenericParam("Values","V","values", GH_ParamAccess.list);
+            //pManager.Register_GenericParam("Keys", "K", "jhfjgs", GH_ParamAccess.list);
+            //pManager.Register_GenericParam("Values","V","values", GH_ParamAccess.list);
+            pManager.Register_GenericParam("S", "S", "Type of object.", GH_ParamAccess.item);
+            pManager.Register_GenericParam("V", "V", "value", GH_ParamAccess.list);
+
         }
+
+    
+
 
         /// <summary>
         /// This is the method that actually does the work.
@@ -370,31 +377,51 @@ namespace Picnic
         /// to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            List<Dictionary<string, object>> pf_in = new List<Dictionary<string, object>>();
-            //List<object> pf_in = new List<Object>();
-            List<string> key_out = new List<string>();
-            List<object> v_out = new List<object>();
+            //object obj_in = new object();
+            //object out_val = new object();
+            ////GH_ObjectWrapper obj_in = new GH_ObjectWrapper();
+            //List<GH_ObjectWrapper> obj_in = new List<GH_ObjectWrapper>();
+            //var out_val = new List<Object>();
+            List<object> obj_in = new List<object>();
+            List<object> obj_out = new List<object>();
 
-            GH_ObjectWrapper key_str = new GH_ObjectWrapper();
+            ////if (!DA.GetData(0, ref obj_in)) return;
+            if (!DA.GetDataList(0, obj_in)) return;
 
-            List<GH_ObjectWrapper> raw_pf_in = new List<GH_ObjectWrapper>();
+
+            obj_out = Picnic.Convert_List(obj_in);
 
 
-            if (!DA.GetDataList(0, raw_pf_in)) return;
+            var t_string = obj_in[0].GetType().ToString();
+            DA.SetData(0, t_string);
+            DA.SetDataList(1, obj_out);
+            
 
-            for (int i = 0; i < raw_pf_in.Count; i++)
-            {
-                var o = raw_pf_in[i].Value;
-                pf_in.Add(o as Dictionary<string, object>);
-            }
+            //List<Dictionary<string, object>> pf_in = new List<Dictionary<string, object>>();
+            //List<string> key_out = new List<string>();
+            //List<object> v_out = new List<object>();
+
+            //GH_ObjectWrapper key_str = new GH_ObjectWrapper();
+
+            //List<GH_ObjectWrapper> raw_pf_in = new List<GH_ObjectWrapper>();
+
+            //if (!DA.GetDataList(0, raw_pf_in)) return;
+
+            //for (int i = 0; i < raw_pf_in.Count; i++)
+            //{
+            //    var o = raw_pf_in[i].Value;
+            //    pf_in.Add(o as Dictionary<string, object>);
+            //}
 
             //foreach (string key in pf_in[0].Keys) {
             //    key_out.Add(key);
             //}
 
-            DA.SetDataList(0, key_out);
+            //DA.SetDataList(0, key_out);
 
         }
+
+
 
         /// <summary>
         /// Provides an Icon for every component that will be visible in the User Interface.
